@@ -10,7 +10,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId !== "wrap-as-code") return;
     chrome.scripting.executeScript({
         target: { tabId: tab.id, allFrames: true },
-        func: wrapSelection        // same helper you already have
+        func: wrapSelection
     });
 });
 
@@ -43,7 +43,7 @@ function wrapSelection() {
         range.deleteContents();
         range.insertNode(code);
 
-        // Optional: move caret after the new node
+        // move caret after the new node
         range.setStartAfter(code); range.collapse(true);
         sel.removeAllRanges(); sel.addRange(range);
 
