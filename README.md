@@ -26,6 +26,17 @@ This extension is not on the official store. You must install it manually in "de
 5.  A file selection dialog will open. Navigate to and select the folder where you saved the extension files (e.g., the `CodeWrapper` folder). Do not select the individual files, but the folder that contains them.
 6.  The extension is now installed and active.
 
+## Installation in Google Chrome
+
+This extension is fully compatible with Google Chrome. The installation process requires enabling developer mode to "sideload" the extension, which is very similar to the procedure for Microsoft Edge.
+
+1.  Download the extension files and place them in a permanent folder on your computer (e.g., `C:\Users\YourUser\Documents\Extensions\CodeWrapper`). The extension will cease to function if this folder is moved or deleted.
+2.  Open Google Chrome and navigate to the Extensions page by typing `chrome://extensions/` in the address bar and pressing Enter.
+3.  In the top-right corner of the page, enable the **Developer mode** toggle switch.
+4.  A new set of buttons will appear on the top-left. Click the **Load unpacked** button.
+5.  In the file selection dialog that opens, navigate to and select the folder containing the extension's source files (e.g., the `CodeWrapper` folder). You must select the parent folder, not the individual files within it.
+6.  The extension will now appear in your list of installed extensions and is ready to use.
+
 ## Understanding the Files
 
 An extension is made of a few key files. Understanding their purpose is necessary for customization.
