@@ -27,30 +27,32 @@ function wrapSelection() {
 
     const activeEl = document.activeElement;
 
-    // Plain <textarea>/<input> branch unchanged …
+    /* ── Plain‐text controls unchanged ───────────────────────────── */
     if (activeEl && (activeEl.tagName === 'TEXTAREA' ||
         (activeEl.tagName === 'INPUT' && activeEl.type === 'text'))) {
-        const [start, end] = [activeEl.selectionStart, activeEl.selectionEnd];
-        activeEl.setRangeText('`' + activeEl.value.slice(start, end) + '`', start, end, 'end');
+        const [s, e] = [activeEl.selectionStart, activeEl.selectionEnd];
+        activeEl.setRangeText('`' + activeEl.value.slice(s, e) + '`', s, e, 'end');
         activeEl.dispatchEvent(new Event('input', { bubbles: true }));
         return;
     }
 
-    try {
-        const range = sel.getRangeAt(0);
-        const code = document.createElement('code');
-        code.textContent = sel.toString();
+    /* ── Rich‑text branch ────────────────────────────────────────── */
+    const raw = sel.toString();
+    const leadWS = raw.match(/^\s*/)[0];   // keep leading/trailing spaces *outside* the tag
+    const trailWS = raw.match(/\s*$/)[0];
+    const core = raw.trim()
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;');
 
-        range.deleteContents();
-        range.insertNode(code);
+    const html = leadWS +
+        `<em style="font-family:'Courier New', monospace;font-size:16px;">${core}</em>` +
+        trailWS;
 
-        // move caret after the new node
-        range.setStartAfter(code); range.collapse(true);
-        sel.removeAllRanges(); sel.addRange(range);
+    document.execCommand('insertHTML', false, html);
 
-        code.parentNode.dispatchEvent(new Event('input', { bubbles: true }));
-    } catch (e) {
-        console.error('Inline-code wrapper error:', e);
-    }
+    // Tell the editor a change happened
+    const root = sel.anchorNode && sel.anchorNode.parentNode;
+    if (root) root.dispatchEvent(new Event('input', { bubbles: true }));
 }
+
 
