@@ -26,11 +26,12 @@ function wrapSelection() {
     if (!sel || sel.isCollapsed) return;
 
     const activeEl = document.activeElement;
+
+    // Plain <textarea>/<input> branch unchanged …
     if (activeEl && (activeEl.tagName === 'TEXTAREA' ||
         (activeEl.tagName === 'INPUT' && activeEl.type === 'text'))) {
         const [start, end] = [activeEl.selectionStart, activeEl.selectionEnd];
-        const v = activeEl.value;
-        activeEl.value = v.slice(0, start) + '`' + v.slice(start, end) + '`' + v.slice(end);
+        activeEl.setRangeText('`' + activeEl.value.slice(start, end) + '`', start, end, 'end');
         activeEl.dispatchEvent(new Event('input', { bubbles: true }));
         return;
     }
